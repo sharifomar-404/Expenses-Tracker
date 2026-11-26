@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Expense Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Readex+Pro:wght@500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true" width="0" height="0" style="position:absolute">
+      <symbol id="i-logo" viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></g></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></g></symbol>
+      <symbol id="i-clip" viewBox="0 0 24 24"><path d="M21 11.5l-8.6 8.6a5 5 0 0 1-7.1-7.1l8.6-8.6a3.3 3.3 0 0 1 4.7 4.7l-8.6 8.6a1.7 1.7 0 0 1-2.4-2.4l7.9-7.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    </svg>
+    <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to content</a>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <!-- <span class="brand__mark" aria-hidden="true">E</span> -->
+          <span class="brand__name" data-i18n="app.name">Expense Tracker</span>
+        </div>
+        <button
+          class="btn btn--primary add-btn"
+          type="button"
+          data-action="open-add"
+        >
+          <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+          <span class="add-btn__label" data-i18n="action.addExpense"
+            >Add expense</span
+          >
+        </button>
+        <nav class="nav" aria-label="Main">
+          <a class="nav__link" href="index.html">
+            <svg class="icon" aria-hidden="true"><use href="#i-home"></use></svg>
+            <span data-i18n="nav.dashboard">Dashboard</span>
+          </a>
+          <a class="nav__link" href="transactions.html">
+            <svg class="icon" aria-hidden="true"><use href="#i-list"></use></svg>
+            <span data-i18n="nav.transactions">Transactions</span>
+          </a>
+          <a class="nav__link" href="bills.html" aria-current="page">
+            <svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg>
+            <span data-i18n="nav.bills">Bills</span>
+            <span class="badge" id="bills-badge" hidden>0</span>
+          </a>
+          <a class="nav__link" href="stats.html">
+            <svg class="icon" aria-hidden="true"><use href="#i-chart"></use></svg>
+            <span data-i18n="nav.stats">Stats</span>
+          </a>
+        </nav>
+        <div class="settings">
+          <div class="settings__group">
+            <span
+              class="settings__label"
+              id="currency-label"
+              data-i18n="settings.currency"
+              >Display currency</span
+            >
+            <div
+              class="segmented"
+              role="group"
+              aria-labelledby="currency-label"
+            >
+              <button
+                type="button"
+                class="segmented__btn"
+                data-set-currency="USD"
+                aria-pressed="true"
+              >
+                USD
+              </button>
+              <button
+                type="button"
+                class="segmented__btn"
+                data-set-currency="SAR"
+                aria-pressed="false"
+              >
+                SAR
+              </button>
+            </div>
+          </div>
+          <div class="settings__group">
+            <span
+              class="settings__label"
+              id="lang-label"
+              data-i18n="settings.language"
+              >Language</span
+            >
+            <div class="segmented" role="group" aria-labelledby="lang-label">
+              <button
+                type="button"
+                class="segmented__btn"
+                data-set-lang="en"
+                aria-pressed="true"
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                class="segmented__btn"
+                data-set-lang="ar"
+                aria-pressed="false"
+                lang="ar"
+              >
+                عربي
+              </button>
+            </div>
+          </div>
+          <div class="settings__group settings__group--glass">
+            <label class="settings__label" for="glass-range" data-i18n="settings.glass">Card glass</label>
+            <div class="glass-control">
+              <input class="range" type="range" id="glass-range" min="0" max="100" step="5" value="0">
+              <output class="glass-control__value" id="glass-value" for="glass-range">0%</output>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="theme-toggle"
+            data-action="toggle-theme"
+            aria-pressed="false"
+          >
+            <svg class="icon" aria-hidden="true"><use href="#i-moon"></use></svg>
+            <span data-i18n="settings.darkMode">Dark mode</span>
+            <span class="switch" aria-hidden="true"></span>
+          </button>
+        </div>
+      </aside>
+      <main class="main" id="main">
+        <header class="page-header">
+          <h1 class="page-title" data-i18n="nav.bills">Bills</h1>
+        </header>
+                <div class="banner banner--danger" id="overdue-banner" role="alert" hidden>
+          <svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg>
+          <p id="overdue-text"></p>
+        </div>
+
+                <section class="card bills-summary" aria-labelledby="bills-total-label">
+          <div class="stat">
+            <h2 class="stat__label" id="bills-total-label" data-i18n="bills.next30">Due in the next 30 days</h2>
+            <p class="stat__value" id="bills-total">$0.00</p>
+            <p class="bills-summary__count" id="bills-count"></p>
+          </div>
+          <button type="button" class="btn btn--primary" data-action="open-bill">
+            <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+            <span data-i18n="bills.add">Add bill</span>
+          </button>
+        </section>
+
+                <article class="card">
+          <h2 class="card__title" data-i18n="bills.all">All bills</h2>
+          <ul class="rows" id="bill-list"></ul>
+          <p class="card__empty" id="bill-empty" hidden data-i18n="bills.empty">No bills yet. Add rent, phone or internet to get reminders.</p>
+        </article>
+
+        <p class="list-hint" data-i18n="bills.hint">Reminders show here and on the Dashboard while this site is open. There are no phone notifications.</p>
+
+        <footer class="page-footer">
+          <p class="page-footer__note" data-i18n="footer.privacy">Your data is saved only in this browser. Nothing is sent to a server.</p>
+                    <div class="page-footer__actions">
+            <button type="button" class="btn btn--secondary" data-action="load-sample" data-i18n="footer.loadSample">Load sample data</button>
+            <button type="button" class="btn btn--danger" data-action="clear-data" data-i18n="footer.clearData">Clear all data</button>
+          </div>
+                    <p class="page-footer__credit">
+            <span data-i18n="footer.builtBy">Built by</span>
+            <a class="link" href="https://github.com/YOUR-USERNAME" target="_blank" rel="noopener">YOUR NAME</a>
+          </p>
+        </footer>
+      </main>
+    </div>
+        <dialog class="panel" id="entry-panel" aria-labelledby="entry-title">
+                <form class="panel__form" id="entry-form" novalidate>
+                          <div class="panel__head">
+          <h2 class="panel__title" id="entry-title" data-i18n="panel.newExpense">New expense</h2>
+          <button type="button" class="icon-btn" data-action="close-panel" aria-label="Close" data-i18n-aria="action.close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+                <fieldset class="segmented segmented--lg">
+          <legend class="visually-hidden" data-i18n="panel.type">Type</legend>
+
+          <input class="segmented__input" type="radio" name="type" id="type-expense" value="expense" checked>
+          <label class="segmented__btn" for="type-expense" data-i18n="panel.expense">Expense</label>
+
+          <input class="segmented__input" type="radio" name="type" id="type-income" value="income">
+          <label class="segmented__btn" for="type-income" data-i18n="panel.income">Income</label>
+        </fieldset>
+                <div class="field">
+          <label class="field__label" for="amount" data-i18n="panel.amount">Amount</label>
+                    <div class="amount">
+            <span class="amount__symbol" id="amount-symbol" aria-hidden="true">$</span>
+            <input class="amount__input" id="amount" name="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00" required aria-describedby="amount-converted amount-error">
+                        <fieldset class="segmented segmented--sm">
+              <legend class="visually-hidden" data-i18n="panel.currency">Currency</legend>
+
+              <input class="segmented__input" type="radio" name="currency" id="cur-usd" value="USD" checked>
+              <label class="segmented__btn" for="cur-usd">USD</label>
+
+              <input class="segmented__input" type="radio" name="currency" id="cur-sar" value="SAR">
+              <label class="segmented__btn" for="cur-sar">SAR</label>
+            </fieldset>
+          </div>
+          <p class="field__hint" id="amount-converted" aria-live="polite"></p>
+          <p class="field__error" id="amount-error" hidden data-i18n="error.amount">Enter an amount greater than 0.</p>
+          <p class="budget-hint" id="budget-hint" hidden></p>
+        </div>
+                <fieldset class="field" id="category-group">
+          <legend class="field__label" data-i18n="panel.category">Category</legend>
+          <div class="chips chips--grid">
+                        <input class="chip__input" type="radio" name="category" id="cat-housing" value="housing">
+            <label class="chip" for="cat-housing">
+              <span class="dot dot--housing" aria-hidden="true"></span>
+              <span data-i18n="cat.housing">Housing</span>
+            </label>
+                        <input class="chip__input" type="radio" name="category" id="cat-food" value="food">
+            <label class="chip" for="cat-food">
+              <span class="dot dot--food" aria-hidden="true"></span>
+              <span data-i18n="cat.food">Food</span>
+            </label>
+
+            <input class="chip__input" type="radio" name="category" id="cat-transport" value="transport">
+            <label class="chip" for="cat-transport">
+              <span class="dot dot--transport" aria-hidden="true"></span>
+              <span data-i18n="cat.transport">Transport</span>
+            </label>
+
+            <input class="chip__input" type="radio" name="category" id="cat-bills" value="bills">
+            <label class="chip" for="cat-bills">
+              <span class="dot dot--bills" aria-hidden="true"></span>
+              <span data-i18n="cat.bills">Bills</span>
+            </label>
+
+            <input class="chip__input" type="radio" name="category" id="cat-fun" value="fun">
+            <label class="chip" for="cat-fun">
+              <span class="dot dot--fun" aria-hidden="true"></span>
+              <span data-i18n="cat.fun">Fun</span>
+            </label>
+
+            <input class="chip__input" type="radio" name="category" id="cat-other" value="other">
+            <label class="chip" for="cat-other">
+              <span class="dot dot--other" aria-hidden="true"></span>
+              <span data-i18n="cat.other">Other</span>
+            </label>
+                      </div>
+          <p class="field__error" id="category-error" hidden data-i18n="error.category">Pick a category.</p>
+        </fieldset>
+                <fieldset class="field" id="source-group" hidden disabled>
+          <legend class="field__label" data-i18n="panel.source">Source</legend>
+          <div class="chips chips--grid">
+            <input class="chip__input" type="radio" name="source" id="src-salary" value="salary" checked>
+            <label class="chip" for="src-salary">
+              <span class="dot dot--housing" aria-hidden="true"></span>
+              <span data-i18n="src.salary">Salary</span>
+            </label>
+
+            <input class="chip__input" type="radio" name="source" id="src-freelance" value="freelance">
+            <label class="chip" for="src-freelance">
+              <span class="dot dot--accent" aria-hidden="true"></span>
+              <span data-i18n="src.freelance">Freelance</span>
+            </label>
+
+            <input class="chip__input" type="radio" name="source" id="src-other" value="other">
+            <label class="chip" for="src-other">
+              <span class="dot dot--other" aria-hidden="true"></span>
+              <span data-i18n="src.other">Other</span>
+            </label>
+          </div>
+        </fieldset>
+                <div class="field">
+          <label class="field__label" for="description" data-i18n="panel.description">Description</label>
+          <input class="input" id="description" name="description" type="text" maxlength="60" autocomplete="off" required aria-describedby="description-error" placeholder="e.g. Weekly groceries" data-i18n-placeholder="panel.descriptionHint">
+          <p class="field__error" id="description-error" hidden data-i18n="error.description">Add a short description.</p>
+        </div>
+                <div class="field">
+          <label class="field__label" for="date" data-i18n="panel.date">Date</label>
+          <input class="input" id="date" name="date" type="date" required>
+        </div>
+                <details class="extra">
+          <summary class="extra__toggle" data-i18n="panel.addNote">Add note</summary>
+          <div class="field">
+            <label class="visually-hidden" for="note" data-i18n="panel.note">Note</label>
+            <textarea class="input" id="note" name="note" rows="3" maxlength="300" placeholder="Anything worth remembering" data-i18n-placeholder="panel.noteHint"></textarea>
+          </div>
+        </details>
+                <details class="extra" id="receipt-extra">
+          <summary class="extra__toggle" data-i18n="panel.attachReceipt">Attach receipt</summary>
+          <div class="field">
+            <label class="file-drop" for="receipt">
+              <span data-i18n="panel.receiptPick">Choose a photo or PDF</span>
+              <span class="field__hint" data-i18n="panel.receiptLimit">Up to 5 MB · saved only on this device</span>
+            </label>
+            <input class="visually-hidden" id="receipt" name="receipt" type="file" accept="image/*,application/pdf">
+                        <div class="receipt-preview" id="receipt-preview" hidden>
+              <img class="receipt-preview__img" id="receipt-img" alt="" width="56" height="56">
+              <a class="receipt-preview__name link" id="receipt-name" target="_blank" rel="noopener"></a>
+              <button type="button" class="icon-btn" data-action="remove-receipt" aria-label="Remove receipt" data-i18n-aria="panel.removeReceipt">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <p class="field__error" id="receipt-error" hidden data-i18n="error.receipt">That file is over 5 MB.</p>
+          </div>
+        </details>
+                <div class="panel__foot">
+          <button type="button" class="btn btn--danger-text" data-action="delete-entry" id="delete-btn" hidden data-i18n="action.delete">Delete</button>
+          <button type="button" class="btn btn--ghost" data-action="close-panel" data-i18n="action.cancel">Cancel</button>
+          <button type="submit" class="btn btn--secondary" name="intent" value="again" data-i18n="action.saveAnother">Save &amp; add another</button>
+          <button type="submit" class="btn btn--primary" name="intent" value="save" data-i18n="action.save">Save</button>
+        </div>
+                <p class="panel__kbd" data-i18n="panel.shortcuts">Esc to close · Enter to save</p>
+      </form>
+    </dialog>
+        <dialog class="panel panel--small" id="budget-panel" aria-labelledby="budget-title">
+      <form class="panel__form" id="budget-form" novalidate>
+            <div class="panel__head">
+          <h2 class="panel__title" id="budget-title" data-i18n="budget.title">Monthly budget</h2>
+          <button type="button" class="icon-btn" data-action="close-panel" aria-label="Close" data-i18n-aria="action.close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+                <div class="field">
+          <label class="field__label" for="budget-amount" data-i18n="budget.amount">Amount per month</label>
+          <div class="amount">
+            <input class="amount__input" id="budget-amount" name="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00" required aria-describedby="budget-amount-hint budget-error">
+
+            <fieldset class="segmented segmented--sm">
+              <legend class="visually-hidden" data-i18n="panel.currency">Currency</legend>
+
+              <input class="segmented__input" type="radio" name="currency" id="bud-usd" value="USD" checked>
+              <label class="segmented__btn" for="bud-usd">USD</label>
+
+              <input class="segmented__input" type="radio" name="currency" id="bud-sar" value="SAR">
+              <label class="segmented__btn" for="bud-sar">SAR</label>
+            </fieldset>
+          </div>
+                    <p class="field__hint" id="budget-amount-hint" data-i18n="budget.hint">Shown in both currencies at the fixed 3.75 rate.</p>
+          <p class="field__error" id="budget-error" hidden data-i18n="error.amount">Enter an amount greater than 0.</p>
+        </div>
+                <div class="panel__foot">
+          <button type="button" class="btn btn--danger-text" data-action="remove-budget" id="remove-budget-btn" hidden data-i18n="budget.remove">Remove budget</button>
+          <button type="button" class="btn btn--ghost" data-action="close-panel" data-i18n="action.cancel">Cancel</button>
+          <button type="submit" class="btn btn--primary" data-i18n="action.save">Save</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog class="panel panel--small" id="bill-panel" aria-labelledby="bill-title">
+      <form class="panel__form" id="bill-form" novalidate>
+        <div class="panel__head">
+          <h2 class="panel__title" id="bill-title" data-i18n="billPanel.new">New bill</h2>
+          <button type="button" class="icon-btn" data-action="close-panel" aria-label="Close" data-i18n-aria="action.close">
+            <svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg>
+          </button>
+        </div>
+
+                <div class="field">
+          <label class="field__label" for="bill-name" data-i18n="billPanel.name">Name</label>
+          <input class="input" id="bill-name" name="name" type="text" maxlength="40" autocomplete="off" required aria-describedby="bill-name-error" placeholder="e.g. Internet" data-i18n-placeholder="billPanel.nameHint">
+          <p class="field__error" id="bill-name-error" hidden data-i18n="error.name">Add a name.</p>
+        </div>
+
+                <div class="field">
+          <label class="field__label" for="bill-amount" data-i18n="panel.amount">Amount</label>
+          <div class="amount">
+            <input class="amount__input" id="bill-amount" name="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00" required aria-describedby="bill-amount-error">
+            <fieldset class="segmented segmented--sm">
+              <legend class="visually-hidden" data-i18n="panel.currency">Currency</legend>
+              <input class="segmented__input" type="radio" name="currency" id="bill-usd" value="USD" checked>
+              <label class="segmented__btn" for="bill-usd">USD</label>
+              <input class="segmented__input" type="radio" name="currency" id="bill-sar" value="SAR">
+              <label class="segmented__btn" for="bill-sar">SAR</label>
+            </fieldset>
+          </div>
+          <p class="field__error" id="bill-amount-error" hidden data-i18n="error.amount">Enter an amount greater than 0.</p>
+        </div>
+                <div class="field">
+          <label class="field__label" for="bill-category" data-i18n="panel.category">Category</label>
+          <select class="select bill-select" id="bill-category" name="category">
+            <option value="bills" data-i18n="cat.bills">Bills</option>
+            <option value="housing" data-i18n="cat.housing">Housing</option>
+            <option value="transport" data-i18n="cat.transport">Transport</option>
+            <option value="fun" data-i18n="cat.fun">Fun</option>
+            <option value="other" data-i18n="cat.other">Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="bill-due" data-i18n="billPanel.nextDue">Next due date</label>
+          <input class="input" id="bill-due" name="nextDue" type="date" required aria-describedby="bill-due-error">
+          <p class="field__error" id="bill-due-error" hidden data-i18n="error.date">Pick a date.</p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="bill-repeat" data-i18n="billPanel.repeat">Repeats</label>
+          <select class="select bill-select" id="bill-repeat" name="repeat">
+            <option value="monthly" data-i18n="repeat.monthly">Every month</option>
+            <option value="yearly" data-i18n="repeat.yearly">Every year</option>
+            <option value="once" data-i18n="repeat.once">Just once</option>
+          </select>
+        </div>
+
+                <div class="panel__foot">
+          <button type="button" class="btn btn--danger-text" data-action="delete-bill" id="delete-bill-btn" hidden data-i18n="action.delete">Delete</button>
+          <button type="button" class="btn btn--ghost" data-action="close-panel" data-i18n="action.cancel">Cancel</button>
+          <button type="submit" class="btn btn--primary" data-i18n="action.save">Save</button>
+        </div>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite">
+      <span class="toast__msg" id="toast-msg"></span>
+      <button type="button" class="toast__action" id="toast-undo" data-i18n="action.undo">Undo</button>
+    </div>
+        <template id="tx-row-template">
+      <li class="row">
+        <button type="button" class="row__btn" data-action="edit-entry">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="row__text">
+            <span class="row__title"></span>
+            <span class="row__meta"></span>
+          </span>
+          <span class="row__receipt" hidden aria-label="Has receipt" data-i18n-aria="row.hasReceipt">📎</span>
+          <span class="row__amounts">
+            <span class="row__amount"></span>
+            <span class="row__converted" hidden></span>
+          </span>
+        </button>
+      </li>
+    </template>
+        <template id="bill-row-template">
+      <li class="row row--bill">
+        <span class="row__text">
+          <span class="row__title"></span>
+          <span class="row__due"></span>
+        </span>
+        <span class="row__amount"></span>
+      </li>
+    </template>
+        <template id="legend-item-template">
+      <li class="legend__item">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="legend__name"></span>
+        <strong class="legend__amount"></strong>
+      </li>
+    </template>
+    <template id="bill-item-template">
+      <li class="row bill-item">
+        <span class="row__text">
+          <span class="row__title"></span>
+          <span class="row__due"></span>
+        </span>
+        <span class="status"></span>
+        <span class="row__amount"></span>
+        <span class="bill-item__actions">
+          <button type="button" class="btn btn--secondary btn--sm" data-action="pay-bill" data-i18n="bills.markPaid">Mark as paid</button>
+          <button type="button" class="icon-btn" data-action="calendar-bill">
+            <svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg>
+          </button>
+          <button type="button" class="link-btn" data-action="edit-bill" data-i18n="action.edit">Edit</button>
+        </span>
+      </li>
+    </template>
+  </body>
+</html>
